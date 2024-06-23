@@ -1,3 +1,4 @@
+import logging
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,3 +14,9 @@ if not os.path.exists(REPORTS_DIR):
 
 if not os.path.exists(DATA_INVOICES_DIR):
     os.makedirs(DATA_INVOICES_DIR)
+
+logging.basicConfig(
+    format='%(asctime)s [%(module)s] %(levelname)s: %(message)s',
+    datefmt='%d-%m-%Y %H:%M:%S',
+    level=logging.INFO
+)

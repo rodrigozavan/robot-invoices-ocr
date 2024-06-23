@@ -36,6 +36,7 @@ Robô para realizar o desafio RPA onde o objetivo é baixar as imagens de fatura
 - Python == ^3.12
 - Playwright==1.44.0
 - Pytesseract==0.3.10
+- Tesseract==5.3.0
 
 ## Instalação
 

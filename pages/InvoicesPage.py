@@ -84,27 +84,37 @@ class InvoicesPage:
                     }
         """
         try:
-            rows_invoices = self.page.locator(self.locators.rows_invoices)
-            expect(rows_invoices.first).to_be_visible(timeout=timeout)
-            rows_invoices = rows_invoices.all()
 
+            btn_paginate = self.page.locator(self.locators.btn_paginate)
+            expect(btn_paginate.first).to_be_visible(timeout=timeout)
+
+            buttons = btn_paginate.all()
             links = []
-            for row in rows_invoices:
-                id_invoice = row.locator("td:nth-child(2)").text_content()
 
-                due_date = row.locator("td:nth-child(3)").text_content()
-                due_date = format_date(due_date, '%d-%m-%Y', '%d/%m/%Y')
+            for button in buttons:
 
-                link = row.locator("td:nth-child(4) a").get_attribute("href")
-                link = f"{self.url}{link}"
+                button.click()
 
-                current_data = {
-                    "id_invoice": id_invoice,
-                    "due_date": due_date,
-                    "link": link
-                }
+                rows_invoices = self.page.locator(self.locators.rows_invoices)
+                expect(rows_invoices.first).to_be_visible(timeout=timeout)
+                rows_invoices = rows_invoices.all()
 
-                links.append(current_data)
+                for row in rows_invoices:
+                    id_invoice = row.locator("td:nth-child(2)").text_content()
+
+                    due_date = row.locator("td:nth-child(3)").text_content()
+                    due_date = format_date(due_date, '%d-%m-%Y', '%d/%m/%Y')
+
+                    link = row.locator("td:nth-child(4) a").get_attribute("href") # noqa E501
+                    link = f"{self.url}{link}"
+
+                    current_data = {
+                        "id_invoice": id_invoice,
+                        "due_date": due_date,
+                        "link": link
+                    }
+
+                    links.append(current_data)
 
         except Exception as e:
             return {
