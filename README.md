@@ -2,6 +2,35 @@
 
 Robô para realizar o desafio RPA onde o objetivo é baixar as imagens de faturas, extrair as informações relevantes e subir um relatório com todas as faturas vencidas.
 
+### Técnicas utilizadas
+- OCR (Tesseract) para reconhecimento de textos em imagens
+- Expressões regulares (regex) para identificação de padrões em textos
+- Playwright para automação do navegador
+- CSV para escrita do arquivo csv
+- Json para escrita e manipulação de arquivos json
+- Todo o projeto foi escrito e organizado no desing pattern Page Objects
+
+### Estrutura de pastas e arquivos
+
+```bash
+├───locators
+│      Locators.py
+├───pages
+│       InvoicesPage.py
+├───src
+│   ├───data
+│   ├───invoices
+│   └───reports
+├───utils
+│        csv_heandler.py
+│        extract_data_invoices.py
+│        utils.py
+│   main.py
+│   README.md
+│   requirements.txt
+│   settings.py
+```
+
 ## Pré-requisitos
 
 - Python == ^3.12
@@ -19,15 +48,29 @@ Robô para realizar o desafio RPA onde o objetivo é baixar as imagens de fatura
 2. Instale o ambiente virtual e ative:
 
     ```bash
+    # Windows
     pip install virtualenv
     virtualenv venv
     .\venv\Scripts\activate
     ```
 
+    ```bash
+    # Linux
+    pip3 install virtualenv
+    virtualenv venv
+    .\venv\bin\activate
+    ```
+
 3. Instale as dependências:
 
     ```bash
+    # Windows
     pip install -r requirements.txt
+    ```
+
+    ```bash
+    # Linux
+    pip3 install -r requirements.txt
     ```
 
 4. Instale as dependências do playwright:
