@@ -84,14 +84,14 @@ def run(playwright: Playwright) -> None:
         for data_item in invoices_data:
 
             is_overdue = validate_duedate(
-                data_item["due_date"], data_item["invoice_date"]
+                data_item["due_date"]
             )
 
             invoice_no = data_item["invoice_number"]
 
-            logging.info(f"Fatura {invoice_no} vencida, adicionando no relatório...") # noqa E501
-
             if is_overdue:
+
+                logging.info(f"Fatura {invoice_no} vencida, adicionando no relatório...") # noqa E501
 
                 date_to_write.append({
                     "ID": data_item["id_invoice"],
@@ -132,7 +132,5 @@ def run(playwright: Playwright) -> None:
 
 
 if __name__ == "__main__":
-
     with sync_playwright() as playwright:
-        result = run(playwright)
-        print(result)
+        run(playwright)

@@ -88,11 +88,10 @@ class InvoicesPage:
             btn_paginate = self.page.locator(self.locators.btn_paginate)
             expect(btn_paginate.first).to_be_visible(timeout=timeout)
 
-            buttons = btn_paginate.all()
             links = []
+            buttons = btn_paginate.all()
 
             for button in buttons:
-
                 button.click()
 
                 rows_invoices = self.page.locator(self.locators.rows_invoices)

@@ -105,7 +105,7 @@ def fomat_currency(value: str) -> str:
     return str(value).replace(',', '')
 
 
-def validate_duedate(due_date: str, date_invoice: str):
+def validate_duedate(due_date: str):
     """
     Validates if the invoice is overdue.
 
@@ -117,6 +117,6 @@ def validate_duedate(due_date: str, date_invoice: str):
         bool: True if the invoice is overdue, False otherwise.
     """
     due_date = datetime.strptime(due_date, '%d/%m/%Y')
-    date_invoice = datetime.strptime(date_invoice, '%d/%m/%Y')
+    today = datetime.now()
 
-    return date_invoice <= due_date
+    return due_date <= today
