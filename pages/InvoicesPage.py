@@ -58,6 +58,28 @@ class InvoicesPage:
         """
         self.page.goto(self.url)
 
+    def start_challange(self, timeout: int = 10000):
+        """
+        Open the invoices page in the browser.
+
+        """
+        try:
+            start_challange = self.page.locator(self.locators.btn_start_challange) # noqa E501
+            expect(start_challange).to_be_visible(timeout=timeout)
+            start_challange.click()
+        except Exception as e:
+            return {
+                "error": True,
+                "message": f"Erro ao iniciar desafio: {e}",
+                "data": None,
+            }
+
+        return {
+            "error": False,
+            "message": "",
+            "data": None,
+        }
+
     def get_invoices_links(self, timeout: int = 5000) -> Dict[str, List]:
         """
         Retrieves the links to the invoices on the page.
@@ -84,7 +106,6 @@ class InvoicesPage:
                     }
         """
         try:
-
             btn_paginate = self.page.locator(self.locators.btn_paginate)
             expect(btn_paginate.first).to_be_visible(timeout=timeout)
 
@@ -138,7 +159,7 @@ class InvoicesPage:
             invoices to be downloaded.
 
         Returns:
-            dict: A dictionary containing the result of the download operation.
+            dict: A dictionary containing the result of the download operation. # noqa E501
             The dictionary has the following keys:
                 - "error" (bool): Indicates whether an error occurred during
                 the download process.
@@ -169,4 +190,27 @@ class InvoicesPage:
             "error": False,
             "message": "",
             "data": invoices,
+        }
+
+    def submit_report(self, path: str, timeout: int = 10000):
+        """
+        Open the invoices page in the browser.
+
+        """
+        try:
+
+            submit_reports = self.page.locator(self.locators.input_submit_reports) # noqa E501
+            expect(submit_reports).to_be_visible(timeout=timeout)
+            submit_reports.set_input_files(path)
+        except Exception as e:
+            return {
+                "error": True,
+                "message": f"Erro ao enviar relatório: {e}",
+                "data": None,
+            }
+
+        return {
+            "error": False,
+            "message": "",
+            "data": None,
         }

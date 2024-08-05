@@ -1,13 +1,12 @@
 from playwright.sync_api import Playwright, sync_playwright
-from utils.utils import validate_duedate, clear_directory
 from utils.extract_data_invoices import get_info_invoice
 from pages.InvoicesPage import InvoicesPage
+from utils.utils import validate_duedate
 from utils.csv_heandler import write_csv
 from datetime import datetime
 import json
 import os
 from settings import (
-    INVOICES_DIR,
     DATA_INVOICES_DIR,
     REPORTS_DIR,
     logging
@@ -30,6 +29,11 @@ def run(playwright: Playwright) -> None:
         invoices_page = InvoicesPage(page)
 
         invoices_page.open()
+
+        start_challange = invoices_page.start_challange()
+        if start_challange.get("error"):
+            logging.error(start_challange.get("message"))
+            return start_challange
 
         invoices_links = invoices_page.get_invoices_links()
         if invoices_links.get("error"):
@@ -91,7 +95,7 @@ def run(playwright: Playwright) -> None:
 
             if is_overdue:
 
-                logging.info(f"Fatura {invoice_no} vencida, adicionando no relatório...") # noqa E501
+                logging.info(f"Fatura {invoice_no} adicionada no relatório...") # noqa E501
 
                 date_to_write.append({
                     "ID": data_item["id_invoice"],
@@ -102,13 +106,16 @@ def run(playwright: Playwright) -> None:
                     "TotalDue": data_item["total_invoice"]
                 })
 
-        if date_to_write:
-            filename = f"overdue-invoices-{today}.csv"
-            filename = os.path.join(REPORTS_DIR, filename)
-            write_csv(filename, date_to_write)
-            message = f"Operação realizada com sucesso: Relatório salvo em: {filename}" # noqa E501
-        else:
-            message = "Operação realizada com sucesso: Sem faturas vencidas."
+        filename = f"overdue-invoices-{today}.csv"
+        filename = os.path.join(REPORTS_DIR, filename)
+        write_csv(filename, date_to_write)
+
+        submit_report = invoices_page.submit_report(filename)
+        if submit_report.get("error"):
+            logging.error(submit_report.get("message"))
+            return submit_report
+
+        message = f"Operação realizada com sucesso: Relatório salvo em: {filename}" # noqa E501
 
         logging.info(message)
 
@@ -128,7 +135,6 @@ def run(playwright: Playwright) -> None:
     finally:
         context.close()
         browser.close()
-        clear_directory(INVOICES_DIR)
 
 
 if __name__ == "__main__":

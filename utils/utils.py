@@ -119,4 +119,4 @@ def validate_duedate(due_date: str):
     due_date = datetime.strptime(due_date, '%d/%m/%Y')
     today = datetime.now()
 
-    return due_date <= today
+    return today <= due_date
